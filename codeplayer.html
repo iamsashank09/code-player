@@ -1,0 +1,181 @@
+<html>
+    <head>
+    
+    <title>CodePlayer</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
+        
+        <style type="text/css">
+        
+            body{
+                font-family: 'Josefin Sans', sans-serif;
+                 padding: 0;
+                margin: 0;
+            }
+            
+            #header {
+                width:100%;
+                background: #EEEEEE;
+                height: 40px;
+               
+            }
+            
+            #buttonContainer {
+                width:233px;
+                margin: 0 auto;
+                padding-top: 7px;
+            }
+            
+            #logo {
+                float: left;
+                font-family: 'Gloria Hallelujah', cursive;
+                font-size: 120%;
+                font-weight: bold;
+                padding-left: 55px;
+            }
+            
+            .toggleButton {
+                float:left;
+                border: 1px solid grey;
+                padding: 4px;
+                border-right: none;
+            }
+            
+            .runJS{
+                float: right; 
+                margin-right: 55px;
+                 background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+                 
+            }
+            
+            #html{
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+        
+            #output{
+                border-right: 1px solid grey;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+            
+            .active{
+                background-color: aquamarine;
+            }
+            
+            .highButton{
+                background-color: grey;
+            }
+            
+            textarea{
+                resize: none;
+            }
+            
+            .panel{
+                float: left;
+                width: 50%;
+            }
+            
+            iframe{
+                border:none;
+            }
+            
+            .hidden{
+                
+                display: none;
+            }
+        </style>
+    
+    </head>
+    <body>
+    
+    <div id="header">
+        
+        <div id="logo">
+        
+            CodePlayer
+            
+        </div>
+        
+        <div id="buttonContainer">
+        
+          <div class="toggleButton active" id="html">HTML</div>
+            
+          <div class="toggleButton" id="css">CSS</div>
+          
+          <div class="toggleButton" id="JavaScript">JavaScript</div>
+          
+          <div class="toggleButton active" id="output">Output</div>
+            
+          
+        </div>
+        
+        <button class="runJS" id="JSrun">Run JavaScript</button>
+            
+        </div>
+        
+    <div id="bodyContainer">
+        
+        <textarea id="htmlPanel" class="panel"><p id="para">Hello World</p></textarea>
+        <textarea id="cssPanel" class="panel hidden">p {color:green;}</textarea>
+        <textarea id="JavaScriptPanel" class="panel hidden">alert("Hey there! This is the default Javascript on the page. You can editit at JavaScript editing tab and tyhen hit Run!");</textarea>
+        <iframe id="outputPanel" class="panel"></iframe>
+        
+        
+        </div>       
+        
+        <script type="text/javascript">
+            
+            function updateOP()
+            {
+                
+                $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#cssPanel").val() + "</style></head><body>" + $("#htmlPanel").val() + "</body></html>"); 
+            }
+        
+        $(".toggleButton").hover(function(){
+                               $(this).addClass("highButton");
+                               }, function(){
+                                 $(this).removeClass("highButton");
+                                 })
+        
+        $(".toggleButton").click(function(){
+            $(this).toggleClass("active");
+            $(this).toggleClass("highButton");
+            
+            var panelId = $(this).attr("id")+ "Panel";
+            
+            $("#" + panelId).toggleClass("hidden");
+            
+            var numberOfActPanels = 4 - $('.hidden').length;
+        
+            $(".panel").width(($(window).width() / numberOfActPanels) - 10)
+        })
+        
+        
+        $(".panel").height($(window).height()-$(header).height()-15);
+     $(".panel").width(($(window).width() / 2) - 10);    
+            
+         updateOP();
+         document.getElementById("outputPanel").contentWindow.eval($("#JavaScriptPanel").val());
+            
+        $("textarea").on('change keyup paste', function(){
+            
+           updateOP();
+            
+            } ) 
+        
+        $(".runJS").click(function(){
+            
+            document.getElementById("outputPanel").contentWindow.eval($("#JavaScriptPanel").val());
+            
+        })
+        </script>
+    </body>
+</html>
